@@ -20,3 +20,16 @@ steps:
     npm install
     ng build 
   displayName: 'npm install and build'
+  
+- script: |
+    ng test --no-watch --code-coverage
+  displayName: 'test'
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage Angular results'
+  condition: succeededOrFailed()
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/coverage'
+    failIfCoverageEmpty: false
